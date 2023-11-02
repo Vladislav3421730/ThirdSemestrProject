@@ -59,16 +59,6 @@ public:
 
 	virtual void displayInformation() = 0;
 
-
-	template<class T>
- 	bool check_on_exist(vector<T> vector) 
-	{
-		for (auto t : vector) {
-			if (t.getLogin() == this->getLogin()) return true;
-		}
-		return false;
-	};
-
 };
 
 class Admin : public CommonInterface {

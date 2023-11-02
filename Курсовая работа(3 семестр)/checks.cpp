@@ -18,7 +18,7 @@ bool isNumberNumeric()
 		return false;
 	}
 }
- int check(int left_range, int right_range, int number)
+extern  int check(int left_range, int right_range, int number)
 {
 	while (!isNumberNumeric() || number > right_range || number < left_range)
 	{

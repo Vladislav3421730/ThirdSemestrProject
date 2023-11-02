@@ -10,10 +10,10 @@ namespace WorkWithFlowers {
 	extern void addFlower();
 	extern void deleteFlower();
 	extern void editFlower();
-	extern void sortFlower();
-	extern void AllFlowers();
+	extern void sortFlower(vector<Flower> &Flowers);
+	extern void AllFlowers(vector<Flower> Flowers);
 	extern void searchFlowers();
-	extern void viewOneFlower(int i);
+	extern void viewOneFlower(int i, vector<Flower> VectorFlowers);
 }
 extern void menu_for_manager();
 extern void MenuForManagerForOrders();

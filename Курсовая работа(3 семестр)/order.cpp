@@ -39,9 +39,19 @@ void MenuForUsers() {
 		no_color
 			choice = check(1, 6, choice);
 		switch (choice) {
-		case 1:  WorkWithFlowers::AllFlowers(); system("pause"); system("cls"); break;
+		case 1:  WorkWithFlowers::AllFlowers(WorkWithFlowers::Flowers); system("pause"); system("cls"); break;
 		case 2: WorkWithFlowers::searchFlowers(); system("cls"); break;
-		case 3:  system("pause"); system("cls"); break;
+		case 3: 
+		{
+			vector<Flower> FlowersCopy;
+			for (auto flower : WorkWithFlowers::Flowers) {
+				FlowersCopy.push_back(flower);
+			}
+			WorkWithFlowers::sortFlower(FlowersCopy); 
+			system("pause"); 
+			system("cls");
+			break;
+		}
 		case 4: WorkWithOrders::MakeOrder();  system("pause"); system("cls"); break;
 		case 5: WorkWithOrders::AllOrders(workFithAuthentication::UserPtr->getOrders()); system("pause"); system("cls"); break;
 		case 6: return;
@@ -61,7 +71,7 @@ void WorkWithOrders::MakeOrder() {
 	Order order;
 	order.setNumber(WorkWithOrders::Orders.size() + 1);
 	cout << "÷веты, которые досступны в нашем ассортименте" << endl;
-	WorkWithFlowers::AllFlowers();
+	WorkWithFlowers::AllFlowers(WorkWithFlowers::Flowers);
 	int totalSum=0;
 	for (int i = 0; i < Amount; i++) {
 		cout << "¬ведите номер цветка, который вы хотите добавить (0-если передумали вводить цветок) : ";

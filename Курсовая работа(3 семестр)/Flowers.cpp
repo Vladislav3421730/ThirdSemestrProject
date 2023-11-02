@@ -76,13 +76,13 @@ void menu_for_manager() {
 		choice = check(1,8,choice);
 		switch (choice) {
         case 1:  WorkWithFlowers::addFlower(); system("pause"); system("cls"); break;
-        case 2:  WorkWithFlowers::AllFlowers(); system("pause"); system("cls"); break;
+        case 2:  WorkWithFlowers::AllFlowers(WorkWithFlowers::Flowers); system("pause"); system("cls"); break;
         case 3:  WorkWithFlowers::editFlower(); system("pause"); system("cls"); break;
         case 4:  WorkWithFlowers::deleteFlower(); system("pause"); system("cls"); break;
-        case 5:  WorkWithFlowers::sortFlower(); system("pause"); system("cls"); break;
+        case 5:  WorkWithFlowers::sortFlower(WorkWithFlowers::Flowers); system("pause"); system("cls"); break;
         case 6:  WorkWithFlowers::searchFlowers();  system("cls"); break;
         case 7:system("cls"); MenuForManagerForOrders(); system("cls"); break;
-        case 8:system("cls"); workFithAuthentication::show_menu_for_registr();  break;
+        case 8:system("cls"); workFithAuthentication::show_menu_for_registr(); return;  break;
 		}
 	}
 }
@@ -112,13 +112,13 @@ void  WorkWithFlowers::addFlower() {
     }
 }
 void WorkWithFlowers::deleteFlower() {
-    AllFlowers();
+    AllFlowers(Flowers);
     cout << "Введите номер цветка, который вы хотите удалить : ";
     int index;
     cin >> index;
     index = check(1, Flowers.size(),index);
     viewTop();
-    WorkWithFlowers::viewOneFlower(index-1);
+    WorkWithFlowers::viewOneFlower(index-1, Flowers);
     cout << "Вы точно хотите удалить данный цветок ? (1/0) : ";
     int choice;
     cin >> choice;
@@ -133,13 +133,13 @@ void WorkWithFlowers::deleteFlower() {
 
 }
 void WorkWithFlowers::editFlower() {
-    AllFlowers();
+    AllFlowers(Flowers);
     cout << "Введите номер цветка, который вы хотите отредактировать : " << endl;
     int number;
     cin >> number;
     number = check(1, Flowers.size(), number);
     viewTop();
-    WorkWithFlowers::viewOneFlower(number - 1);
+    WorkWithFlowers::viewOneFlower(number - 1,Flowers);
     cout << "Что хотите изменить в данном цветке ?" << endl;
     cout << "1. Название" << endl;
     cout << "2. Количество на складе" << endl;
@@ -192,7 +192,7 @@ bool CompareByCoast(  Flower& obj1,   Flower& obj2)
 
 
 
-void WorkWithFlowers::sortFlower() {
+void WorkWithFlowers::sortFlower(vector<Flower> &VectorFlowers) {
 
     cout << "По какой характеристеке вы хотите отсортировать цветы ? " << endl;
     cout << "1. По названию" << endl;
@@ -204,15 +204,15 @@ void WorkWithFlowers::sortFlower() {
     choice = check_on_letters(choice);
     switch (choice) {
     case 1:
-        sort(Flowers.begin(), Flowers.end(), CompareByName);
+        sort(VectorFlowers.begin(), VectorFlowers.end(), CompareByName);
         cout << "Все цветы были отсортированы по названию" << endl;
         break;
     case 2:
-        sort(Flowers.begin(), Flowers.end(), CompareByAmount);
+        sort(VectorFlowers.begin(), VectorFlowers.end(), CompareByAmount);
         cout << "Все цветы были отсортированы по количеству" << endl;
         break;
     case 3:
-        sort(Flowers.begin(), Flowers.end(), CompareByCoast);
+        sort(VectorFlowers.begin(), VectorFlowers.end(), CompareByCoast);
         cout << "Все цветы были отсортированы по цене" << endl;
         break;
     case 4:return;
@@ -220,7 +220,7 @@ void WorkWithFlowers::sortFlower() {
         cout << "Вы неправильно ввели номер операции" << endl;
     }
     if (choice == 1 || choice == 2 || choice == 3) {
-        AllFlowers();
+        AllFlowers(VectorFlowers);
     }
 
 
@@ -258,7 +258,7 @@ void WorkWithFlowers::searchFlowers()
                     result1 = true;
                     count1++;
                     if (count1 == 1)viewTop();
-                    viewOneFlower(i);
+                    viewOneFlower(i,Flowers);
                 }
             }
             if (!result1) cout << "Нет цветка с таким названием" << endl;
@@ -282,7 +282,7 @@ void WorkWithFlowers::searchFlowers()
                     result2 = true;
                     count2++;
                     if (count2 == 1) viewTop();
-                    viewOneFlower(i);
+                    viewOneFlower(i,Flowers);
                 }
             }
             if (!result2) cout << "Нет цветка с таким диапазонои цен" << endl;
@@ -302,7 +302,7 @@ void WorkWithFlowers::searchFlowers()
                     result3 = true;
                     count3++;
                     if (count3 == 1) viewTop();
-                    viewOneFlower(i);
+                    viewOneFlower(i,Flowers);
                 }
             }
             if (!result) cout << "Нет цветов с таким количеством на складе" << endl;
@@ -312,15 +312,15 @@ void WorkWithFlowers::searchFlowers()
     }
 }
 
-void WorkWithFlowers::AllFlowers() {
+void WorkWithFlowers::AllFlowers(vector<Flower> VectorFlowers) {
     viewTop();
-    for (int i = 0;i<Flowers.size();i++) {
-        WorkWithFlowers::viewOneFlower(i);
+    for (int i = 0;i< VectorFlowers.size();i++) {
+        WorkWithFlowers::viewOneFlower(i, VectorFlowers);
     }
 
 }
-void WorkWithFlowers::viewOneFlower(int i) {
-    cout << "|  " << setw(3) << i + 1 << "  |   " << setw(21) << Flowers[i].GetName() << "  |         " << setw(5) << Flowers[i].GetAmount() << "        |       "
-        << setw(5) << Flowers[i].GetCoast() << "   |" << endl;
+void WorkWithFlowers::viewOneFlower(int i, vector<Flower> VectorFlowers) {
+    cout << "|  " << setw(3) << i + 1 << "  |   " << setw(21) << VectorFlowers[i].GetName() << "  |         " << setw(5) << VectorFlowers[i].GetAmount() << "        |       "
+        << setw(5) << VectorFlowers[i].GetCoast() << "   |" << endl;
     cout << "|_______|__________________________|______________________|_______________|" << endl;
 }

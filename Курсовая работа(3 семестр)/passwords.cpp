@@ -19,7 +19,7 @@ namespace workFithAuthentication
 	shared_ptr<User> UserPtr;
 
 }
- void workFithAuthentication::show_menu_for_registr()
+extern void workFithAuthentication::show_menu_for_registr()
 {
 	int n;
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -175,7 +175,7 @@ void workFithAuthentication::REGISTRATION()
 		}
 
 		User user(login, password, false, false);
-		if (user.check_on_exist(users)) cout << "Пользователь с таким ником уже есть в системе" << endl;
+		if (check_on_exist(users,user)) cout << "Пользователь с таким ником уже есть в системе" << endl;
 		else {
 			users.push_back(user);
 			cout << "Ваша заявка принята на рассмотрение" << endl;
@@ -213,7 +213,7 @@ void workFithAuthentication::REGISTRATION()
 			}
 
 			Admin admin(login, password);
-			if (admin.check_on_exist(admins)) cout << "Админ с таким ником уже есть в системе" << endl;
+			if (check_on_exist(admins,admin)) cout << "Админ с таким ником уже есть в системе" << endl;
 			else {
 				admins.push_back(admin);
 				cout << "Новый администротор зарегестрирован" << endl;
@@ -252,7 +252,7 @@ void workFithAuthentication::REGISTRATION()
 			}
 
 			Manager manager(login, password);
-			if (manager.check_on_exist(managers)) cout << "Менеджер с таким ником уже есть в системе" << endl;
+			if (check_on_exist(managers,manager)) cout << "Менеджер с таким ником уже есть в системе" << endl;
 			else {
 				managers.push_back(manager);
 				cout << "Новый Менеджер зарегестрирован" << endl;

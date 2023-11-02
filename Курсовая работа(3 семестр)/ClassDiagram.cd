@@ -1,2 +1,46 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram /> 
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Admin">
+    <Position X="7.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>passwords.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Order">
+    <Position X="3.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAEAAzAkAAAAAEAABEACAAAAARgABEEBAAAAAAAAADA=</HashCode>
+      <FileName>order.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="User">
+    <Position X="5.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BgAAAAABAAAAAAAAAAAAAAAAAAAAACAAgAICACAABAk=</HashCode>
+      <FileName>passwords.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Manager">
+    <Position X="9.75" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>passwords.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Flower">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAAAAAAIAgCASAAQAAAABAAAAAAAAADAA=</HashCode>
+      <FileName>Flowers.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="FlowerForOrder">
+    <Position X="1.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAIAAAAAAAAAAIAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>order.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

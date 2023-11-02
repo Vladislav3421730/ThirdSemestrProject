@@ -29,7 +29,6 @@ int main()
 	CopyFlowersToOrder(WorkWithOrders::FlowersForOrders, WorkWithOrders::Orders);
 	CopyOrdersToUser(WorkWithOrders::Orders, workFithAuthentication::users);
 
-
 	workFithAuthentication::show_menu_for_registr();
 
 
