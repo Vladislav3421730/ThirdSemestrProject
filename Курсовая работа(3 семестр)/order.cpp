@@ -1,8 +1,17 @@
-#include"order.h"
-#include"passwords.h"
+ï»¿
 #include"checks.h"
 #include<iomanip>
 #include<algorithm>
+#include<conio.h>
+#include"files.h"
+
+#define ESC 27
+#define UP 72
+#define DOWN 80
+#define ENTER 13
+
+
+const string FILE_OF_ORDERS = "FileForOrders.dat";
 
 namespace WorkWithOrders {
 
@@ -10,127 +19,204 @@ namespace WorkWithOrders {
 	vector<FlowerForOrder> FlowersForOrders;
 }
 
+HANDLE h = GetStdHandle(STD_OUTPUT_HANDLE);
+void d(short x, short y)
+{
+	SetConsoleCursorPosition(h, { x,y });
+}
+
 void viewTopForOrder() {
 	cout << "________________________________________________________________" << endl;
-	cout << "|  ¹  |           Öâåòû          |  Êîëè÷åòñâî | Öåíà (çà âñ¸) |" << endl;
+	cout << "|  â„–  |           Ð¦Ð²ÐµÑ‚Ñ‹          |  ÐšÐ¾Ð»Ð¸Ñ‡ÐµÑ‚ÑÐ²Ð¾ | Ð¦ÐµÐ½Ð° (Ð·Ð° Ð²ÑÑ‘) |" << endl;
 	cout << "|_____|__________________________|_____________|_______________|" << endl;
 
 }
 
+
 void MenuForUsers() {
-
-	while (1) {
-
 		HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-		get_green cout << setw(150) << "_________________________________________________________________________________________" << endl;
-		cout << setw(62) << "|"; get_yellow cout << "                                     ÌÅÍÞ ÄËß ÏÎËÜÇÎÂÀÒÅËß                             "; get_green cout << "| " << endl;
-		cout << setw(150) << "|_______________________________________________________________________________________|" << endl;
-		cout << setw(62) << "|"; get_blue cout << "                                1. Ïðîñìòîð öâåòîâ"; get_green cout << "                                     | " << endl;
-		cout << setw(62) << "|"; get_blue cout << "                                2. Ïîèñê öâåòîâ "; get_green cout << "                                       | " << endl;
-		cout << setw(62) << "|"; get_blue cout << "                                3. Ñîðòèðîâàêà öâåòîâ"; get_green cout << "                                  | " << endl;
-		cout << setw(62) << "|"; get_blue cout << "                                4. Ñäåëàòü çàêàç "; get_green cout << "                                      | " << endl;
-		cout << setw(62) << "|"; get_blue cout << "                                5. Ïðîñìîòðåòü ñâîè çàêàçû "; get_green cout << "                            | " << endl;
-		cout << setw(62) << "|"; get_blue cout << "                                6. Âûéòè èç ïðîãðàììû "; get_green cout << "                                 | " << endl;
-		cout << setw(150) << "|_______________________________________________________________________________________|" << endl;
-		get_yellow cout << setw(110) << "                                   ÂÀØ ÂÛÁÎÐ ";
-		get_red
-			int choice;
-		cin >> choice;
-		no_color
-			choice = check(1, 6, choice);
-		switch (choice) {
-		case 1:  WorkWithFlowers::AllFlowers(WorkWithFlowers::Flowers); system("pause"); system("cls"); break;
-		case 2: WorkWithFlowers::searchFlowers(); system("cls"); break;
-		case 3: 
+		cout<<setw(126)  << "________________________________________" << endl;
+		cout << setw(94) << "|       "; 
+		get_red cout << " ÐœÐ•ÐÐ® Ð”Ð›Ð¯ ÐŸÐžÐ›Ð¬Ð—ÐžÐ’ÐÐ¢Ð•Ð›Ð¯"; no_color
+		cout<<"         |" << endl;
+		cout << setw(126) << "|______________________________________|" << endl;
+		char aT = 0;
+		char c;
+		string T[] = {										
+															"|        1. ÐŸÑ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€ Ñ†Ð²ÐµÑ‚Ð¾Ð²            |",
+															"|        2. ÐŸÐ¾Ð¸ÑÐº Ñ†Ð²ÐµÑ‚Ð¾Ð²               |",
+															"|        3. Ð¡Ð¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²ÐºÐ° Ñ†Ð²ÐµÑ‚Ð¾Ð²          |",
+															"|        4. Ð¡Ð´ÐµÐ»Ð°Ñ‚ÑŒ Ð·Ð°ÐºÐ°Ð·              |",                         
+								                            "|        5. ÐŸÑ€Ð¾ÑÐ¼Ð¾Ñ‚Ñ€ÐµÑ‚ÑŒ Ð·Ð°ÐºÐ°Ð·Ñ‹         |",
+								                            "|        6. Ð’Ñ‹Ð¹Ñ‚Ð¸ Ð¸Ð· Ð¿Ñ€Ð¾Ð³Ñ€Ð°Ð¼Ð¼Ñ‹         |"
+		};
+		while (true)
 		{
-			vector<Flower> FlowersCopy;
-			for (auto flower : WorkWithFlowers::Flowers) {
-				FlowersCopy.push_back(flower);
+			char x = 86, y = 3;
+			d(x, y);
+			for (char i = 0; i < size(T); i++)
+			{
+				if (i == aT)  SetConsoleTextAttribute(h, FOREGROUND_RED);
+				else  SetConsoleTextAttribute(h, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+				d(x, y++);
+				cout << T[i] << endl;
 			}
-			WorkWithFlowers::sortFlower(FlowersCopy); 
-			system("pause"); 
-			system("cls");
-			break;
+			SetConsoleTextAttribute(h, FOREGROUND_BLUE | FOREGROUND_GREEN | FOREGROUND_RED);
+			cout << setw(126) << "|______________________________________|" << endl;
+			c = _getch();
+			if (c == -32) c = _getch();
+			switch (c)
+			{
+			case ESC:
+				exit(0);
+			case UP:
+				if (aT > 0)	--aT;
+				break;
+			case DOWN:
+				if (aT < size(T) - 1)	++aT;
+				break;
+			case ENTER:
+				
+				switch (aT)
+				{
+					
+				case 0:
+				{
+					d(x, y);
+					cout << "\n\n\n";
+					WorkWithFlowers::AllFlowers(WorkWithFlowers::Flowers);
+					system("pause"); system("cls");
+					MenuForUsers();
+					break;
+				}
+				case 1:
+				{
+					d(x, y);
+					cout << "\n\n\n";
+					WorkWithFlowers::searchFlowers();
+					system("cls"); 
+					MenuForUsers();
+					break;
+				}
+				case 2:
+				{
+					d(x, y);
+					cout << "\n\n\n";
+					vector<Flower> FlowersCopy;
+					for (auto flower : WorkWithFlowers::Flowers) {
+						FlowersCopy.push_back(flower);
+					}
+					WorkWithFlowers::sortFlower(FlowersCopy);
+					system("pause");
+					system("cls");
+					MenuForUsers();
+					break;
+				}
+				case 3:
+				{
+					d(x, y);
+					cout << "\n\n\n";
+					WorkWithOrders::MakeOrder();
+					system("pause"); system("cls");
+					MenuForUsers();
+					break;
+				}
+				case 4:
+				{
+					d(x, y);
+					cout << "\n\n\n";
+					WorkWithOrders::AllOrders(workFithAuthentication::UserPtr->getOrders());
+					system("pause"); system("cls");
+					MenuForUsers(); 
+					break;
+				}
+				case 5:
+				{
+					d(x, y);
+					cout << "\n\n\n";
+					write_in_file(FILE_OF_ORDERS, WorkWithOrders::Orders);
+					exit(0);
+					return;
+			
+				}
+				default: cout << "" << (char)c << endl;
+				}
+			}
 		}
-		case 4: WorkWithOrders::MakeOrder();  system("pause"); system("cls"); break;
-		case 5: WorkWithOrders::AllOrders(workFithAuthentication::UserPtr->getOrders()); system("pause"); system("cls"); break;
-		case 6: return;
-		}
-	}
 }
 
 void WorkWithOrders::MakeOrder() {
-	cout << "Ñêîëüêî öâåòîâ âû õîòèòå äîáàâèòü â çàêàç ? (0-åñëè âû ïåðåäóìàëè äåëàòü çàêàç)" << endl;
+	cout << "Ð¡ÐºÐ¾Ð»ÑŒÐºÐ¾ Ñ†Ð²ÐµÑ‚Ð¾Ð² Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð´Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ Ð² Ð·Ð°ÐºÐ°Ð· ? (0-ÐµÑÐ»Ð¸ Ð²Ñ‹ Ð¿ÐµÑ€ÐµÐ´ÑƒÐ¼Ð°Ð»Ð¸ Ð´ÐµÐ»Ð°Ñ‚ÑŒ Ð·Ð°ÐºÐ°Ð·)" << endl;
 	int Amount;
 	cin >> Amount;
 	Amount = check(0, 1100, Amount);
 	if (Amount == 0) {
-		cout << "Íó ëàäíî, êàê õîòèòå !" << endl;
+		cout << "ÐÑƒ Ð»Ð°Ð´Ð½Ð¾, ÐºÐ°Ðº Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ !" << endl;
 		return;
 	}
 	Order order;
 	order.setNumber(WorkWithOrders::Orders.size() + 1);
-	cout << "Öâåòû, êîòîðûå äîññòóïíû â íàøåì àññîðòèìåíòå" << endl;
+	cout << "Ð¦Ð²ÐµÑ‚Ñ‹, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ðµ Ð´Ð¾ÑÑÑ‚ÑƒÐ¿Ð½Ñ‹ Ð² Ð½Ð°ÑˆÐµÐ¼ Ð°ÑÑÐ¾Ñ€Ñ‚Ð¸Ð¼ÐµÐ½Ñ‚Ðµ" << endl;
 	WorkWithFlowers::AllFlowers(WorkWithFlowers::Flowers);
 	int totalSum=0;
 	for (int i = 0; i < Amount; i++) {
-		cout << "Ââåäèòå íîìåð öâåòêà, êîòîðûé âû õîòèòå äîáàâèòü (0-åñëè ïåðåäóìàëè ââîäèòü öâåòîê) : ";
+		cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ Ñ†Ð²ÐµÑ‚ÐºÐ°, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð´Ð¾Ð±Ð°Ð²Ð¸Ñ‚ÑŒ (0-ÐµÑÐ»Ð¸ Ð¿ÐµÑ€ÐµÐ´ÑƒÐ¼Ð°Ð»Ð¸ Ð²Ð²Ð¾Ð´Ð¸Ñ‚ÑŒ Ñ†Ð²ÐµÑ‚Ð¾Ðº) : ";
 		int number;
 		cin >> number;
 		number = check(0, WorkWithFlowers::Flowers.size(), number);
 		if (number == 0) {
-			cout << "Âû ïåðåäóìàëè ââîäèòü öâåòîê" << endl << endl;
+			cout << "Ð’Ñ‹ Ð¿ÐµÑ€ÐµÐ´ÑƒÐ¼Ð°Ð»Ð¸ Ð²Ð²Ð¾Ð´Ð¸Ñ‚ÑŒ Ñ†Ð²ÐµÑ‚Ð¾Ðº" << endl << endl;
 			continue;
 		}
 		FlowerForOrder flowerfororder(WorkWithFlowers::Flowers[number-1]);
-		cout << "Ââåäèòå êîëè÷åñòâî öâåòîâ, êîòîðîå âû õîòèòå êóïèòü : ";
+		cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾ Ñ†Ð²ÐµÑ‚Ð¾Ð², ÐºÐ¾Ñ‚Ð¾Ñ€Ð¾Ðµ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ ÐºÑƒÐ¿Ð¸Ñ‚ÑŒ : ";
 		int flowersAmount;
 		cin >> flowersAmount;
 		flowersAmount = check(1, 10000, flowersAmount);
 		if (flowersAmount > WorkWithFlowers::Flowers[number - 1].GetAmount()) {
-			cout << "Èçâèíèòå, íî ó íàñ íåò òàêîãî êîëè÷åñòâà öâåòîâ" << endl << endl;
+			cout << "Ð˜Ð·Ð²Ð¸Ð½Ð¸Ñ‚Ðµ, Ð½Ð¾ Ñƒ Ð½Ð°Ñ Ð½ÐµÑ‚ Ñ‚Ð°ÐºÐ¾Ð³Ð¾ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð° Ñ†Ð²ÐµÑ‚Ð¾Ð²" << endl << endl;
 			continue;
 		}
 		WorkWithFlowers::Flowers[number - 1].setAmount(WorkWithFlowers::Flowers[number - 1].GetAmount() - flowersAmount);
 		flowerfororder.setAmount(flowersAmount);
 		flowerfororder.setCoast(flowersAmount * WorkWithFlowers::Flowers[number - 1].GetCoast());
 		totalSum += flowerfororder.GetCoast();
-		cout << "\nÖâåòîê "<< flowerfororder.GetName()<< " ñ êîëè÷åñòâîì "<<flowerfororder.GetAmount() << " áûë äîáàâëåí â çàêàç" << endl;
+		cout << "\nÐ¦Ð²ÐµÑ‚Ð¾Ðº "<< flowerfororder.GetName()<< " Ñ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ð¾Ð¼ "<<flowerfororder.GetAmount() << " Ð±Ñ‹Ð» Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½ Ð² Ð·Ð°ÐºÐ°Ð·" << endl;
 		order.addFlowerToOrderAtFirst(flowerfororder);
 	}
-	cout << "\nÂâåäèòå àäðåññ äîñòàâêè : ";
+	cout << "\nÐ’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð°Ð´Ñ€ÐµÑÑ Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸ : ";
 	string Adress;
 	getline(cin, Adress);
 	order.setAdress(Adress);
 	order.setDate();
 	order.setTotalSum(totalSum);
 	order.setStatus(OrderStatus::Accepted);
-	cout << "Âàø çàêàç äîáàâëåí " << endl;
+	cout << "Ð’Ð°Ñˆ Ð·Ð°ÐºÐ°Ð· Ð´Ð¾Ð±Ð°Ð²Ð»ÐµÐ½ " << endl;
 	workFithAuthentication::UserPtr->addOrderToUserAtFirst(order);
 }
 
 
 void WorkWithOrders::EditOrders() {
 	AllOrders(AllOrdersInVector());
-	cout << "Ââåäèòå íîìåð çàêàçà, êîòîðûé âû õîòèòå îòðåäàêòèðîâàòü : ";
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ Ð·Ð°ÐºÐ°Ð·Ð°, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð¾Ñ‚Ñ€ÐµÐ´Ð°ÐºÑ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ : ";
 	int number;
 	cin >> number;
 	number = check_on_letters(number);
 	if (number <= 0 || number > Orders.size()) {
-		cout << "Âû ââåëè íîìåð çàêàçà íåâåðíî" << endl;
+		cout << "Ð’Ñ‹ Ð²Ð²ÐµÐ»Ð¸ Ð½Ð¾Ð¼ÐµÑ€ Ð·Ð°ÐºÐ°Ð·Ð° Ð½ÐµÐ²ÐµÑ€Ð½Ð¾" << endl;
 		return;
 	}
 	shared_ptr<Order> OrderPtr = make_shared<Order>(Orders[number-1]);
-	cout << "ÇÀÊÀÇ ¹ " << OrderPtr->getNumber() << endl;
+	cout << "Ð—ÐÐšÐÐ— â„– " << OrderPtr->getNumber() << endl;
 	viewTopForOrder();
 	viewOneOrderFlowers(number-1, OrderPtr);
 	ViewOneOrder(number-1,OrderPtr);
-	cout << "Êàêîé ñòàòóñ âû õîòèòå ïðèñâîèòü äàííîìó çàêàçó ? " << endl;
-	cout << "1. Ïðèíÿò" << endl;
-	cout << "2. Îáðàáàòûâàåòñÿ" << endl;
-	cout << "3. Ñîáèðàåòñÿ" << endl;
-	cout << "4. Äîñòàâëåí" << endl;
-	cout << "5. Îòìåíà" << endl;
+	cout << "ÐšÐ°ÐºÐ¾Ð¹ ÑÑ‚Ð°Ñ‚ÑƒÑ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð¿Ñ€Ð¸ÑÐ²Ð¾Ð¸Ñ‚ÑŒ Ð´Ð°Ð½Ð½Ð¾Ð¼Ñƒ Ð·Ð°ÐºÐ°Ð·Ñƒ ? " << endl;
+	cout << "1. ÐŸÑ€Ð¸Ð½ÑÑ‚" << endl;
+	cout << "2. ÐžÐ±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ÑÑ" << endl;
+	cout << "3. Ð¡Ð¾Ð±Ð¸Ñ€Ð°ÐµÑ‚ÑÑ" << endl;
+	cout << "4. Ð”Ð¾ÑÑ‚Ð°Ð²Ð»ÐµÐ½" << endl;
+	cout << "5. ÐžÑ‚Ð¼ÐµÐ½Ð°" << endl;
 	int choice;
 	cin >> choice;
 	choice = check_on_letters(choice);
@@ -138,25 +224,25 @@ void WorkWithOrders::EditOrders() {
 	{
 	case 1: 
 		Orders[number - 1].setStatus(OrderStatus::Accepted);
-		cout << "Ñòàòóñ çàêàçà ïîä íîìåðîì " << Orders[number - 1].getNumber() << " áûë èçìåí¸í íà " << Orders[number - 1].getStatus() << endl;
+		cout << "Ð¡Ñ‚Ð°Ñ‚ÑƒÑ Ð·Ð°ÐºÐ°Ð·Ð° Ð¿Ð¾Ð´ Ð½Ð¾Ð¼ÐµÑ€Ð¾Ð¼ " << Orders[number - 1].getNumber() << " Ð±Ñ‹Ð» Ð¸Ð·Ð¼ÐµÐ½Ñ‘Ð½ Ð½Ð° " << Orders[number - 1].getStatus() << endl;
 		break;
 	case 2:
 		Orders[number - 1].setStatus(OrderStatus::Processing);
-		cout << "Ñòàòóñ çàêàçà ïîä íîìåðîì " << Orders[number - 1].getNumber() << " áûë èçìåí¸í íà " << Orders[number - 1].getStatus()<<endl;
+		cout << "Ð¡Ñ‚Ð°Ñ‚ÑƒÑ Ð·Ð°ÐºÐ°Ð·Ð° Ð¿Ð¾Ð´ Ð½Ð¾Ð¼ÐµÑ€Ð¾Ð¼ " << Orders[number - 1].getNumber() << " Ð±Ñ‹Ð» Ð¸Ð·Ð¼ÐµÐ½Ñ‘Ð½ Ð½Ð° " << Orders[number - 1].getStatus()<<endl;
 		break;
 	case 3:
 		Orders[number - 1].setStatus(OrderStatus::Packing);
-		cout << "Ñòàòóñ çàêàçà ïîä íîìåðîì " << Orders[number - 1].getNumber() << " áûë èçìåí¸í íà " << Orders[number - 1].getStatus()<<endl;
+		cout << "Ð¡Ñ‚Ð°Ñ‚ÑƒÑ Ð·Ð°ÐºÐ°Ð·Ð° Ð¿Ð¾Ð´ Ð½Ð¾Ð¼ÐµÑ€Ð¾Ð¼ " << Orders[number - 1].getNumber() << " Ð±Ñ‹Ð» Ð¸Ð·Ð¼ÐµÐ½Ñ‘Ð½ Ð½Ð° " << Orders[number - 1].getStatus()<<endl;
 		break;
 	case 4:
 		Orders[number - 1].setStatus(OrderStatus::Delivered);
-		cout << "Ñòàòóñ çàêàçà ïîä íîìåðîì " << Orders[number - 1].getNumber() << " áûë èçìåí¸í íà " << Orders[number - 1].getStatus() << endl;
+		cout << "Ð¡Ñ‚Ð°Ñ‚ÑƒÑ Ð·Ð°ÐºÐ°Ð·Ð° Ð¿Ð¾Ð´ Ð½Ð¾Ð¼ÐµÑ€Ð¾Ð¼ " << Orders[number - 1].getNumber() << " Ð±Ñ‹Ð» Ð¸Ð·Ð¼ÐµÐ½Ñ‘Ð½ Ð½Ð° " << Orders[number - 1].getStatus() << endl;
 		break;
 	case 5:
-		cout << "Âû îòìåíèëè èçìåíåíèå ñòàòóñà çàêàçà" << endl;
+		cout << "Ð’Ñ‹ Ð¾Ñ‚Ð¼ÐµÐ½Ð¸Ð»Ð¸ Ð¸Ð·Ð¼ÐµÐ½ÐµÐ½Ð¸Ðµ ÑÑ‚Ð°Ñ‚ÑƒÑÐ° Ð·Ð°ÐºÐ°Ð·Ð°" << endl;
 		break;
 	default:
-		cout << "Íåïðàâèëüíî ââåä¸í íîìåð îïåðàöèè" << endl;
+		cout << "ÐÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾ Ð²Ð²ÐµÐ´Ñ‘Ð½ Ð½Ð¾Ð¼ÐµÑ€ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¸" << endl;
 	}
 }
 
@@ -170,18 +256,23 @@ vector<shared_ptr<Order>> WorkWithOrders::AllOrdersInVector() {
 }
 
 void WorkWithOrders::ViewOneOrder(int i, shared_ptr<Order> Orders) {
-	cout << "| Îáùàÿ ñóìììà çàêàçà   | " << setw(8) << Orders->getTotalSum() << "    | Äàòà çàêàçà |   " << setw(4) << Orders->getDate() << "  |" << endl;
+	cout << "| ÐžÐ±Ñ‰Ð°Ñ ÑÑƒÐ¼Ð¼Ð¼Ð° Ð·Ð°ÐºÐ°Ð·Ð°   | " << setw(8) << Orders->getTotalSum() << "    | Ð”Ð°Ñ‚Ð° Ð·Ð°ÐºÐ°Ð·Ð° |   " << setw(4) << Orders->getDate() << "  |" << endl;
 	cout << "|_______________________|_____________|_____________|__________|" << endl;
-	cout << "|    Àäðåññ äîñòàâêè    | " << setw(34) << Orders->getAdress() << "   |" << endl;
+	cout << "|    ÐÐ´Ñ€ÐµÑÑ Ð´Ð¾ÑÑ‚Ð°Ð²ÐºÐ¸    | " << setw(34) << Orders->getAdress() << "   |" << endl;
 	cout << "|_______________________|______________________________________|" << endl;
-	cout << "|     ÑÒÀÒÓÑ ÇÀÊÀÇÀ     |       " << setw(24) << Orders->getStatus() << "       |" << endl;
+	cout << "|     Ð¡Ð¢ÐÐ¢Ð£Ð¡ Ð—ÐÐšÐÐ—Ð     |       " << setw(24) << Orders->getStatus() << "       |" << endl;
 	cout << "|_______________________|______________________________________|" << endl;
 }
 
 void WorkWithOrders::AllOrders(vector<shared_ptr<Order>> Orders)
 {
+	if (Orders.empty()) {
+		cout << "Ð—ÐÐšÐÐ—ÐžÐ’ ÐÐ•Ð¢" << endl;
+		return;
+	}
+
 	for (int i = 0; i < Orders.size(); i++) {
-		cout << "ÇÀÊÀÇ ¹ " << Orders[i]->getNumber() << endl;
+		cout << "Ð—ÐÐšÐÐ— â„– " << Orders[i]->getNumber() << endl;
 		viewTopForOrder();
 		viewOneOrderFlowers(i,Orders[i]);
 		ViewOneOrder(i, Orders[i]);
@@ -205,57 +296,57 @@ bool CompareByTotalAmount(Order& obj1, Order& obj2) {
 }
 
 void WorkWithOrders::SortOrders() {
-	cout << "Ïî êàêîêó ïàðàìåòðó âû õîòèòå îòñîðòèðîâàòü çàêàçû ?" << endl;
-	cout << "1. Îáùàÿ ñóììà çàêàçà" << endl;
-	cout << "2. Ïî êîëè÷åñòâó öâåòîâ â çàêàçå" << endl;
-	cout << "3. Îòìåíà ñîðòèðîâêè" << endl;
+	cout << "ÐŸÐ¾ ÐºÐ°ÐºÐ¾ÐºÑƒ Ð¿Ð°Ñ€Ð°Ð¼ÐµÑ‚Ñ€Ñƒ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð¾Ñ‚ÑÐ¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ñ‚ÑŒ Ð·Ð°ÐºÐ°Ð·Ñ‹ ?" << endl;
+	cout << "1. ÐžÐ±Ñ‰Ð°Ñ ÑÑƒÐ¼Ð¼Ð° Ð·Ð°ÐºÐ°Ð·Ð°" << endl;
+	cout << "2. ÐŸÐ¾ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÑ‚Ð²Ñƒ Ñ†Ð²ÐµÑ‚Ð¾Ð² Ð² Ð·Ð°ÐºÐ°Ð·Ðµ" << endl;
+	cout << "3. ÐžÑ‚Ð¼ÐµÐ½Ð° ÑÐ¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²ÐºÐ¸" << endl;
 	int choice = 0;
 	cin >> choice;
 	choice = check_on_letters(choice);
 	switch (choice) {
 	case 1:
-		cout << "Âñå çàêàçû áûëè îòñîðòèðîâàíû ïî îáøåé ñóììå çàêàçà" << endl;
+		cout << "Ð’ÑÐµ Ð·Ð°ÐºÐ°Ð·Ñ‹ Ð±Ñ‹Ð»Ð¸ Ð¾Ñ‚ÑÐ¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ñ‹ Ð¿Ð¾ Ð¾Ð±ÑˆÐµÐ¹ ÑÑƒÐ¼Ð¼Ðµ Ð·Ð°ÐºÐ°Ð·Ð°" << endl;
 		sort(Orders.begin(),Orders.end(), CompareByTotalCoast);
 		AllOrders(AllOrdersInVector());
 		break;
 	case 2:
-		cout << "Âñå çàêàçû áûëè îòñîðòèðîâàíû ïî êîëè÷åñâó öâåòîâ â çàêàçå " << endl;
+		cout << "Ð’ÑÐµ Ð·Ð°ÐºÐ°Ð·Ñ‹ Ð±Ñ‹Ð»Ð¸ Ð¾Ñ‚ÑÐ¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²Ð°Ð½Ñ‹ Ð¿Ð¾ ÐºÐ¾Ð»Ð¸Ñ‡ÐµÑÐ²Ñƒ Ñ†Ð²ÐµÑ‚Ð¾Ð² Ð² Ð·Ð°ÐºÐ°Ð·Ðµ " << endl;
 		sort(Orders.begin(), Orders.end(), CompareByTotalAmount);
 		AllOrders(AllOrdersInVector());
 		break;
 	case 3:
-		cout << "Ñîðòèðîâêà îòìåíåíà" << endl;
+		cout << "Ð¡Ð¾Ñ€Ñ‚Ð¸Ñ€Ð¾Ð²ÐºÐ° Ð¾Ñ‚Ð¼ÐµÐ½ÐµÐ½Ð°" << endl;
 		break;
 	default:
-		cout << " Âû íåïðàâèëüíî ââåëè íîìåð îïåðàöèè " << endl;
+		cout << " Ð’Ñ‹ Ð½ÐµÐ¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ð¾ Ð²Ð²ÐµÐ»Ð¸ Ð½Ð¾Ð¼ÐµÑ€ Ð¾Ð¿ÐµÑ€Ð°Ñ†Ð¸Ð¸ " << endl;
 	}
 
 }
 void WorkWithOrders::DeleteOrders() {
 	AllOrders(AllOrdersInVector());
-	cout << "Ââåäèòå íîìåð çàêàçà, êîòîðûé âû õîòèòå óäàëèòü (0- îòìåíà óäàëåíèÿ) : ";
+	cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ Ð·Ð°ÐºÐ°Ð·Ð°, ÐºÐ¾Ñ‚Ð¾Ñ€Ñ‹Ð¹ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ ÑƒÐ´Ð°Ð»Ð¸Ñ‚ÑŒ (0- Ð¾Ñ‚Ð¼ÐµÐ½Ð° ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ñ) : ";
 	int index;
 	cin >> index;
 	index = check_on_letters(index);
 	if (index <= 0 || index > Orders.size()) {
-		cout << "Âû íå ââåëè ïðàâèëüíûé íîìåð çàêàçà" << endl;
+		cout << "Ð’Ñ‹ Ð½Ðµ Ð²Ð²ÐµÐ»Ð¸ Ð¿Ñ€Ð°Ð²Ð¸Ð»ÑŒÐ½Ñ‹Ð¹ Ð½Ð¾Ð¼ÐµÑ€ Ð·Ð°ÐºÐ°Ð·Ð°" << endl;
 		return;
 	}
 	shared_ptr<Order> OrderPtr = make_shared<Order>(Orders[index - 1]);
-	cout << "ÇÀÊÀÇ ¹ " << OrderPtr->getNumber() << endl;
+	cout << "Ð—ÐÐšÐÐ— â„– " << OrderPtr->getNumber() << endl;
 	viewTopForOrder();
 	viewOneOrderFlowers(index- 1, OrderPtr);
 	ViewOneOrder(index- 1, OrderPtr);
-	cout << "Âû óâåðåíû, ÷òî õîòèòå óäàëèòü ýòîò çàêàç ? (1/0) : ";
+	cout << "Ð’Ñ‹ ÑƒÐ²ÐµÑ€ÐµÐ½Ñ‹, Ñ‡Ñ‚Ð¾ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ ÑƒÐ´Ð°Ð»Ð¸Ñ‚ÑŒ ÑÑ‚Ð¾Ñ‚ Ð·Ð°ÐºÐ°Ð· ? (1/0) : ";
 	int choice;
 	cin >> choice;
 	choice = check(0, 1, choice);
 	if (choice == 0) {
-		cout << "Âû îòìåíèëè óäàëåíèå òîâàðà ïîä íîìåðîì " << OrderPtr->getNumber() << endl;
+		cout << "Ð’Ñ‹ Ð¾Ñ‚Ð¼ÐµÐ½Ð¸Ð»Ð¸ ÑƒÐ´Ð°Ð»ÐµÐ½Ð¸Ðµ Ñ‚Ð¾Ð²Ð°Ñ€Ð° Ð¿Ð¾Ð´ Ð½Ð¾Ð¼ÐµÑ€Ð¾Ð¼ " << OrderPtr->getNumber() << endl;
 	}
 	else {
 		Orders.erase(Orders.begin() + index - 1);
-		cout << "Çàêàç ïîä íîìåðîì " << OrderPtr->getNumber() << " áûë óäàë¸í" << endl;
+		cout << "Ð—Ð°ÐºÐ°Ð· Ð¿Ð¾Ð´ Ð½Ð¾Ð¼ÐµÑ€Ð¾Ð¼ " << OrderPtr->getNumber() << " Ð±Ñ‹Ð» ÑƒÐ´Ð°Ð»Ñ‘Ð½" << endl;
 	}
 
 }
@@ -266,7 +357,7 @@ bool ViewOrderByStatus(string status) {
 		shared_ptr<Order> OrderPtr = make_shared<Order>(WorkWithOrders::Orders[i]);
 		if (OrderPtr->getStatus() == status) {
 			result = true;	
-			cout << "ÇÀÊÀÇ ¹ " << OrderPtr->getNumber() << endl;
+			cout << "Ð—ÐÐšÐÐ— â„– " << OrderPtr->getNumber() << endl;
 			viewTopForOrder();
 			WorkWithOrders::viewOneOrderFlowers(i, OrderPtr);
 			WorkWithOrders::ViewOneOrder(i, OrderPtr);
@@ -276,21 +367,21 @@ bool ViewOrderByStatus(string status) {
 }
 
 void WorkWithOrders::SearchOrders() {
-	cout << "Ïî êàêîé õàðàêòåðèñòêå âû õîòèòå íàéòè çàêàç ? " << endl;
-	cout << "1. Îáùàÿ ñóììà çàêàçà (Äèàïàçîí)" << endl;
-	cout << "2. Íîìåð çàêàçà " << endl;
-	cout << "3. Ïî ñòàòóñó" << endl;
-	cout << "4. Âûéòè â ìåíþ" << endl;
+	cout << "ÐŸÐ¾ ÐºÐ°ÐºÐ¾Ð¹ Ñ…Ð°Ñ€Ð°ÐºÑ‚ÐµÑ€Ð¸ÑÑ‚ÐºÐµ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð½Ð°Ð¹Ñ‚Ð¸ Ð·Ð°ÐºÐ°Ð· ? " << endl;
+	cout << "1. ÐžÐ±Ñ‰Ð°Ñ ÑÑƒÐ¼Ð¼Ð° Ð·Ð°ÐºÐ°Ð·Ð° (Ð”Ð¸Ð°Ð¿Ð°Ð·Ð¾Ð½)" << endl;
+	cout << "2. ÐÐ¾Ð¼ÐµÑ€ Ð·Ð°ÐºÐ°Ð·Ð° " << endl;
+	cout << "3. ÐŸÐ¾ ÑÑ‚Ð°Ñ‚ÑƒÑÑƒ" << endl;
+	cout << "4. Ð’Ñ‹Ð¹Ñ‚Ð¸ Ð² Ð¼ÐµÐ½ÑŽ" << endl;
 	int choice;
 	cin >> choice;
 	choice = check_on_letters(choice);
 	switch (choice) {
 	case 1: {
 		int MinCoast, MaxCoast;
-		cout << "Ââåäèòå ìèíèìàëüíóþ ñóììó çàêàçà : ";
+		cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¼Ð¸Ð½Ð¸Ð¼Ð°Ð»ÑŒÐ½ÑƒÑŽ ÑÑƒÐ¼Ð¼Ñƒ Ð·Ð°ÐºÐ°Ð·Ð° : ";
 		cin >> MinCoast;
 		MinCoast = check_on_letters(MinCoast);
-		cout << "Ââåäèòå ìàêñèìàëüíóþ ñóììó çàêàçà : ";
+		cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð¼Ð°ÐºÑÐ¸Ð¼Ð°Ð»ÑŒÐ½ÑƒÑŽ ÑÑƒÐ¼Ð¼Ñƒ Ð·Ð°ÐºÐ°Ð·Ð° : ";
 		cin >> MaxCoast;
 		MaxCoast = check_on_letters(MaxCoast);
 		bool result = false;
@@ -299,26 +390,26 @@ void WorkWithOrders::SearchOrders() {
 			if (OrderPtr->getTotalSum() >= MinCoast && OrderPtr->getTotalSum() <= MaxCoast) {
 				result = true;
 				viewTopForOrder();
-				cout << "ÇÀÊÀÇ ¹ " << OrderPtr->getNumber() << endl;
+				cout << "Ð—ÐÐšÐÐ— â„– " << OrderPtr->getNumber() << endl;
 				viewOneOrderFlowers(i, OrderPtr);
 				ViewOneOrder(i, OrderPtr);
 			}
 		}
-		if (!result) cout << "Íåò çàêàçîâ â òàêîì äèàïàçîíå" << endl;
+		if (!result) cout << "ÐÐµÑ‚ Ð·Ð°ÐºÐ°Ð·Ð¾Ð² Ð² Ñ‚Ð°ÐºÐ¾Ð¼ Ð´Ð¸Ð°Ð¿Ð°Ð·Ð¾Ð½Ðµ" << endl;
 		break;
 	}
 	case 2: {
-		cout << "Ââåäèòå íîìåð çàêàçà : ";
+		cout << "Ð’Ð²ÐµÐ´Ð¸Ñ‚Ðµ Ð½Ð¾Ð¼ÐµÑ€ Ð·Ð°ÐºÐ°Ð·Ð° : ";
 		int index;
 		cin >> index;
 		index = check_on_letters(index);
 		if (index <= 0 || index > Orders.size()) {
-			cout << "Âû íåâåðíî ââåëè íîìåð çàêàçà" << endl;
+			cout << "Ð’Ñ‹ Ð½ÐµÐ²ÐµÑ€Ð½Ð¾ Ð²Ð²ÐµÐ»Ð¸ Ð½Ð¾Ð¼ÐµÑ€ Ð·Ð°ÐºÐ°Ð·Ð°" << endl;
 		}
 		else {
 			shared_ptr<Order> OrderPtr = make_shared<Order>(Orders[index - 1]);
 			viewTopForOrder();
-			cout << "ÇÀÊÀÇ ¹ " << OrderPtr->getNumber() << endl;
+			cout << "Ð—ÐÐšÐÐ— â„– " << OrderPtr->getNumber() << endl;
 			viewOneOrderFlowers(index, OrderPtr);
 			ViewOneOrder(index, OrderPtr);
 		}
@@ -326,32 +417,32 @@ void WorkWithOrders::SearchOrders() {
 	}
 	case 3:
 	{
-		cout << "1. Ïðèíÿò" << endl;
-		cout << "2. Îáðàáàòûâàåòñÿ" << endl;
-		cout << "3. Ñîáèðàåòñÿ" << endl;
-		cout << "4. Äîñòàâëåí" << endl;
-		cout << "Âûáåðåòå ñ êàêèì ñòàòóñîì âû õîòèòå âûâåñòè çàêàçû : ";
+		cout << "1. ÐŸÑ€Ð¸Ð½ÑÑ‚" << endl;
+		cout << "2. ÐžÐ±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ÑÑ" << endl;
+		cout << "3. Ð¡Ð¾Ð±Ð¸Ñ€Ð°ÐµÑ‚ÑÑ" << endl;
+		cout << "4. Ð”Ð¾ÑÑ‚Ð°Ð²Ð»ÐµÐ½" << endl;
+		cout << "Ð’Ñ‹Ð±ÐµÑ€ÐµÑ‚Ðµ Ñ ÐºÐ°ÐºÐ¸Ð¼ ÑÑ‚Ð°Ñ‚ÑƒÑÐ¾Ð¼ Ð²Ñ‹ Ñ…Ð¾Ñ‚Ð¸Ñ‚Ðµ Ð²Ñ‹Ð²ÐµÑÑ‚Ð¸ Ð·Ð°ÐºÐ°Ð·Ñ‹ : ";
 		int choice;
 		cin >> choice;
 		choice = check(1, 4, choice);
 		switch (choice) {
 		case 1:
-			if (!ViewOrderByStatus("Ïðèíÿò")) cout << "Íåò çàêàçîâ ñî ñòàòóñîì Ïðèíÿò" << endl;
+			if (!ViewOrderByStatus("ÐŸÑ€Ð¸Ð½ÑÑ‚")) cout << "ÐÐµÑ‚ Ð·Ð°ÐºÐ°Ð·Ð¾Ð² ÑÐ¾ ÑÑ‚Ð°Ñ‚ÑƒÑÐ¾Ð¼ ÐŸÑ€Ð¸Ð½ÑÑ‚" << endl;
 			break;
 		case 2:
-			if (!ViewOrderByStatus("Îáðàáàòûâàåòñÿ")) cout << "Íåò çàêàçîâ ñî ñòàòóñîì Îáðàáàòûâàåòñÿ" << endl;
+			if (!ViewOrderByStatus("ÐžÐ±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ÑÑ")) cout << "ÐÐµÑ‚ Ð·Ð°ÐºÐ°Ð·Ð¾Ð² ÑÐ¾ ÑÑ‚Ð°Ñ‚ÑƒÑÐ¾Ð¼ ÐžÐ±Ñ€Ð°Ð±Ð°Ñ‚Ñ‹Ð²Ð°ÐµÑ‚ÑÑ" << endl;
 			break;
 		case 3:
-			if (!ViewOrderByStatus("Ñîáèðàåòñÿ")) cout << "Íåò çàêàçîâ ñî ñòàòóñîì Ñîáèðàåòñÿ" << endl;
+			if (!ViewOrderByStatus("Ð¡Ð¾Ð±Ð¸Ñ€Ð°ÐµÑ‚ÑÑ")) cout << "ÐÐµÑ‚ Ð·Ð°ÐºÐ°Ð·Ð¾Ð² ÑÐ¾ ÑÑ‚Ð°Ñ‚ÑƒÑÐ¾Ð¼ Ð¡Ð¾Ð±Ð¸Ñ€Ð°ÐµÑ‚ÑÑ" << endl;
 			break;
 		case 4:
-			if (!ViewOrderByStatus("Äîñòàâëåí")) cout << "Íåò çàêàçîâ ñî ñòàòóñîì Äîñòàâëåí" << endl;
+			if (!ViewOrderByStatus("Ð”Ð¾ÑÑ‚Ð°Ð²Ð»ÐµÐ½")) cout << "ÐÐµÑ‚ Ð·Ð°ÐºÐ°Ð·Ð¾Ð² ÑÐ¾ ÑÑ‚Ð°Ñ‚ÑƒÑÐ¾Ð¼ Ð”Ð¾ÑÑ‚Ð°Ð²Ð»ÐµÐ½" << endl;
 			break;
 		}
 		break;
 	}
 	case 4:
-		cout << "Âû îòìåíèëè ïîèñê çàêàçîâ" << endl;
+		cout << "Ð’Ñ‹ Ð¾Ñ‚Ð¼ÐµÐ½Ð¸Ð»Ð¸ Ð¿Ð¾Ð¸ÑÐº Ð·Ð°ÐºÐ°Ð·Ð¾Ð²" << endl;
 		break;
 	}
 }

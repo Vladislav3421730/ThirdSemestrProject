@@ -72,7 +72,6 @@
     <None Include="FileForOrders.dat">
       <Filter>Resource Files</Filter>
     </None>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Курсовая работа(3 семестр).rc">

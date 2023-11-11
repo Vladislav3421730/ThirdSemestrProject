@@ -47,7 +47,7 @@ void MenuForManagerForOrders() {
         case 3: WorkWithOrders::EditOrders(); system("pause"); system("cls"); break;
         case 4: WorkWithOrders::DeleteOrders(); system("pause"); system("cls"); break;
         case 5: WorkWithOrders::SearchOrders(); system("pause"); system("cls"); break;
-        case 6: system("cls"); menu_for_manager(); system("cls"); break;
+        case 6: system("cls"); menu_for_manager(); system("cls"); return; break;
         }
     }
 }
@@ -71,9 +71,21 @@ void menu_for_manager() {
         cout << setw(150) << "|_______________________________________________________________________________________|" << endl;
         get_yellow cout << setw(110) << "                                   ВАШ ВЫБОР ";
         get_red
-		cin >> choice;
+        try {
+            cin >> choice;
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(256, '\n');
+                no_color
+                throw runtime_error("Неправильно ввдён номер операции");
+            }
+        }
+        catch(runtime_error e){
+            cout <<e.what() << endl;
+            system("pause"); system("cls");
+            continue;
+        }
         no_color
-		choice = check(1,8,choice);
 		switch (choice) {
         case 1:  WorkWithFlowers::addFlower(); system("pause"); system("cls"); break;
         case 2:  WorkWithFlowers::AllFlowers(WorkWithFlowers::Flowers); system("pause"); system("cls"); break;

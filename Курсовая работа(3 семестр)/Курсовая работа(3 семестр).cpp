@@ -1,6 +1,4 @@
-﻿#include"passwords.h"
-#include"Flowers.h"
-#include"order.h"
+﻿#include"Flowers.h"
 #include<Windows.h>
 #include"files.h"
 using namespace std;
@@ -30,7 +28,6 @@ int main()
 	CopyOrdersToUser(WorkWithOrders::Orders, workFithAuthentication::users);
 
 	workFithAuthentication::show_menu_for_registr();
-
 
 	write_in_file(FILE_OF_USERS, workFithAuthentication::users);
 	write_in_file(FILE_OF_ADMIN, workFithAuthentication::admins);

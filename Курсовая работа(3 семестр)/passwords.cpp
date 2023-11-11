@@ -21,7 +21,7 @@ namespace workFithAuthentication
 }
 extern void workFithAuthentication::show_menu_for_registr()
 {
-	int n;
+	int choice;
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	
 	get_blue cout << setw(150) << "_________________________________________________________________________________________" << endl;
@@ -35,10 +35,23 @@ extern void workFithAuthentication::show_menu_for_registr()
 	cout << setw(150) << "|_______________________________________________________________________________________|" << endl;
 	get_yellow cout << setw(110) << "                                   ВАШ ВЫБОР ";
 	get_red
-	cin >> n;
+	try {
+		cin >> choice;
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(256, '\n');
+			no_color
+			throw runtime_error("Неправильно ввдён номер операции");
+		}
+	}
+	catch (runtime_error e) {
+		cout << e.what() << endl;
+		system("pause"); system("cls");
+		workFithAuthentication::show_menu_for_registr();
+	}
+	cin.ignore();
 	no_color
-	n = check(1, 5, n);
-	switch (n)
+	switch (choice)
 	{
 	case 1:
 		

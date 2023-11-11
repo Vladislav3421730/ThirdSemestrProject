@@ -8,7 +8,7 @@
 using namespace std;
 
 template<class T>
-extern void write_in_file(const string filename, vector<T> vector) {
+extern  void write_in_file(const string filename, vector<T> vector) {
 	ofstream file(filename, ios::binary);
 	if (!file) {
 		cout << "Ошибка открытия файла " << filename << endl;
@@ -33,7 +33,7 @@ extern void copy_from_file(const string filename, vector<T> &vector) {
 	}
 	file.close();
 }
-extern void CopyFlowersToOrder(vector<FlowerForOrder> &flowers, vector<Order> &orders)
+inline void CopyFlowersToOrder(vector<FlowerForOrder> &flowers, vector<Order> &orders)
 {
 	for (auto& order : orders) {
 		for (auto &flower : flowers) {
@@ -44,7 +44,7 @@ extern void CopyFlowersToOrder(vector<FlowerForOrder> &flowers, vector<Order> &o
 	}
 }
 
-extern void CopyOrdersToUser(vector<Order> & orders, vector<User>& users)
+inline void CopyOrdersToUser(vector<Order> & orders, vector<User>& users)
 {
 	for (auto& user : users) {
 		for (auto& order : orders) {
