@@ -93,8 +93,11 @@ extern void workFithAuthentication::show_menu_for_registr()
 		}break;
 	case 4:system("cls"); REGISTRATION(); show_menu_for_registr(); break;
 	case 5:
-		system("cls");
 		return;
+	default: 
+		cout << "Неверно введён номер операции" << endl;
+		system("pause"); system("cls");
+		workFithAuthentication::show_menu_for_registr();
 	}
 
 }

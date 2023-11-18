@@ -12,6 +12,8 @@
 
 
 const string FILE_OF_ORDERS = "FileForOrders.dat";
+const string FILE_OF_FLOWERS_FOR_ORDERS = "FileForFlowersForOrder.dat";
+const string FILE_OF_FLOWERS = "FileForFlowers.dat";
 
 namespace WorkWithOrders {
 
@@ -94,7 +96,6 @@ void MenuForUsers() {
 					d(x, y);
 					cout << "\n\n\n";
 					WorkWithFlowers::searchFlowers();
-					system("cls"); 
 					MenuForUsers();
 					break;
 				}
@@ -107,8 +108,6 @@ void MenuForUsers() {
 						FlowersCopy.push_back(flower);
 					}
 					WorkWithFlowers::sortFlower(FlowersCopy);
-					system("pause");
-					system("cls");
 					MenuForUsers();
 					break;
 				}
@@ -135,6 +134,8 @@ void MenuForUsers() {
 					d(x, y);
 					cout << "\n\n\n";
 					write_in_file(FILE_OF_ORDERS, WorkWithOrders::Orders);
+					write_in_file(FILE_OF_FLOWERS_FOR_ORDERS, WorkWithOrders::FlowersForOrders);
+					write_in_file(FILE_OF_FLOWERS, WorkWithFlowers::Flowers);
 					exit(0);
 					return;
 			
@@ -146,6 +147,7 @@ void MenuForUsers() {
 }
 
 void WorkWithOrders::MakeOrder() {
+	
 	cout << "Сколько цветов вы хотите добавить в заказ ? (0-если вы передумали делать заказ)" << endl;
 	int Amount;
 	cin >> Amount;
@@ -155,7 +157,7 @@ void WorkWithOrders::MakeOrder() {
 		return;
 	}
 	Order order;
-	order.setNumber(WorkWithOrders::Orders.size() + 1);
+	order.setNumber(Orders.size()+2);
 	cout << "Цветы, которые досступны в нашем ассортименте" << endl;
 	WorkWithFlowers::AllFlowers(WorkWithFlowers::Flowers);
 	int totalSum=0;
@@ -184,6 +186,10 @@ void WorkWithOrders::MakeOrder() {
 		cout << "\nЦветок "<< flowerfororder.GetName()<< " с количеством "<<flowerfororder.GetAmount() << " был добавлен в заказ" << endl;
 		order.addFlowerToOrderAtFirst(flowerfororder);
 	}
+	if (order.getFlowers().empty()) {
+		cout << "В заказ не было добавлено ни одного цветка, цветок не может быть добавлен" << endl;
+		return;
+	}
 	cout << "\nВведите адресс доставки : ";
 	string Adress;
 	getline(cin, Adress);
@@ -202,8 +208,15 @@ void WorkWithOrders::EditOrders() {
 	int number;
 	cin >> number;
 	number = check_on_letters(number);
-	if (number <= 0 || number > Orders.size()) {
-		cout << "Вы ввели номер заказа неверно" << endl;
+	bool result = false;
+	for (int i = 0; i < Orders.size(); i++) {
+		if (Orders[i].getNumber() == number) {
+			number = i + 1;
+			result = true;
+		}
+	}
+	if (!result) {
+		cout << "Вы ввели неверный номер заказа" << endl;
 		return;
 	}
 	shared_ptr<Order> OrderPtr = make_shared<Order>(Orders[number-1]);
@@ -301,8 +314,20 @@ void WorkWithOrders::SortOrders() {
 	cout << "2. По количеству цветов в заказе" << endl;
 	cout << "3. Отмена сортировки" << endl;
 	int choice = 0;
-	cin >> choice;
-	choice = check_on_letters(choice);
+	try {
+		cin >> choice;
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(256, '\n');
+			throw runtime_error("Вы неверно ввыели номер операции");
+		}
+	}
+	catch (runtime_error& e) {
+		cout << e.what()<< endl;
+		system("pause");system("cls");
+		return;
+	}
+	
 	switch (choice) {
 	case 1:
 		cout << "Все заказы были отсортированы по обшей сумме заказа" << endl;
@@ -315,11 +340,12 @@ void WorkWithOrders::SortOrders() {
 		AllOrders(AllOrdersInVector());
 		break;
 	case 3:
-		cout << "Сортировка отменена" << endl;
-		break;
+		system("cls");
+		return;
 	default:
 		cout << " Вы неправильно ввели номер операции " << endl;
 	}
+	system("pause"); system("cls");
 
 }
 void WorkWithOrders::DeleteOrders() {
@@ -328,15 +354,22 @@ void WorkWithOrders::DeleteOrders() {
 	int index;
 	cin >> index;
 	index = check_on_letters(index);
-	if (index <= 0 || index > Orders.size()) {
-		cout << "Вы не ввели правильный номер заказа" << endl;
+	bool result = false;
+	for (int i = 0; i < Orders.size(); i++) {
+		if (Orders[i].getNumber() == index) {
+			index = i;
+			result = true;
+		}
+	}
+	if (!result) {
+		cout << "Вы ввели неверный номер заказа" << endl;
 		return;
 	}
-	shared_ptr<Order> OrderPtr = make_shared<Order>(Orders[index - 1]);
+	shared_ptr<Order> OrderPtr = make_shared<Order>(Orders[index]);
 	cout << "ЗАКАЗ № " << OrderPtr->getNumber() << endl;
 	viewTopForOrder();
-	viewOneOrderFlowers(index- 1, OrderPtr);
-	ViewOneOrder(index- 1, OrderPtr);
+	viewOneOrderFlowers(index, OrderPtr);
+	ViewOneOrder(index, OrderPtr);
 	cout << "Вы уверены, что хотите удалить этот заказ ? (1/0) : ";
 	int choice;
 	cin >> choice;
@@ -345,7 +378,7 @@ void WorkWithOrders::DeleteOrders() {
 		cout << "Вы отменили удаление товара под номером " << OrderPtr->getNumber() << endl;
 	}
 	else {
-		Orders.erase(Orders.begin() + index - 1);
+		Orders.erase(Orders.begin() + index);
 		cout << "Заказ под номером " << OrderPtr->getNumber() << " был удалён" << endl;
 	}
 
@@ -373,8 +406,19 @@ void WorkWithOrders::SearchOrders() {
 	cout << "3. По статусу" << endl;
 	cout << "4. Выйти в меню" << endl;
 	int choice;
-	cin >> choice;
-	choice = check_on_letters(choice);
+	try {
+		cin >> choice;
+		if (cin.fail()) {
+			cin.clear();
+			cin.ignore(256, '\n');
+			throw runtime_error("Вы ввели неверный номер операции");
+		}
+	}
+	catch (runtime_error& e) {
+		cout << e.what() << endl;
+		system("pause"); system("cls");
+		return;
+	}
 	switch (choice) {
 	case 1: {
 		int MinCoast, MaxCoast;
@@ -389,8 +433,8 @@ void WorkWithOrders::SearchOrders() {
 			shared_ptr<Order> OrderPtr = make_shared<Order>(Orders[i]);
 			if (OrderPtr->getTotalSum() >= MinCoast && OrderPtr->getTotalSum() <= MaxCoast) {
 				result = true;
-				viewTopForOrder();
 				cout << "ЗАКАЗ № " << OrderPtr->getNumber() << endl;
+				viewTopForOrder();
 				viewOneOrderFlowers(i, OrderPtr);
 				ViewOneOrder(i, OrderPtr);
 			}
@@ -408,8 +452,8 @@ void WorkWithOrders::SearchOrders() {
 		}
 		else {
 			shared_ptr<Order> OrderPtr = make_shared<Order>(Orders[index - 1]);
-			viewTopForOrder();
 			cout << "ЗАКАЗ № " << OrderPtr->getNumber() << endl;
+			viewTopForOrder();
 			viewOneOrderFlowers(index, OrderPtr);
 			ViewOneOrder(index, OrderPtr);
 		}
@@ -442,7 +486,9 @@ void WorkWithOrders::SearchOrders() {
 		break;
 	}
 	case 4:
-		cout << "Вы отменили поиск заказов" << endl;
-		break;
+		system("cls");
+		return;
+	default: cout << "Вы ввели неверный номер операции" << endl; system("pause"); system("cls");
 	}
+	system("pause"); system("cls");
 }

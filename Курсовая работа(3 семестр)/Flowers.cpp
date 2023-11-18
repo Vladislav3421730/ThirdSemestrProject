@@ -20,7 +20,7 @@ void viewTop() {
 
 void MenuForManagerForOrders() {
     int choice = 0;
-    while (choice != 7) {
+    while (choice != 6) {
 
         HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
         get_green cout << setw(150) << "_________________________________________________________________________________________" << endl;
@@ -35,19 +35,32 @@ void MenuForManagerForOrders() {
         cout << setw(150) << "|_______________________________________________________________________________________|" << endl;
         get_yellow cout << setw(110) << "                                   ВАШ ВЫБОР ";
         get_red
+            try {
             cin >> choice;
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(256, '\n');
+                no_color
+                    throw runtime_error("Неправильно ввдён номер операции");
+            }
+        }
+        catch (runtime_error e) {
+            cout << e.what() << endl;
+            system("pause"); system("cls");
+            continue;
+        }
         no_color
-            choice = check(1, 8, choice);
         switch (choice) {
         case 1: {
             WorkWithOrders::AllOrders(WorkWithOrders::AllOrdersInVector());
             system("pause"); system("cls");
         }break;
-        case 2: WorkWithOrders::SortOrders(); system("pause"); system("cls"); break;
+        case 2: WorkWithOrders::SortOrders(); break;
         case 3: WorkWithOrders::EditOrders(); system("pause"); system("cls"); break;
         case 4: WorkWithOrders::DeleteOrders(); system("pause"); system("cls"); break;
-        case 5: WorkWithOrders::SearchOrders(); system("pause"); system("cls"); break;
+        case 5: WorkWithOrders::SearchOrders(); break;
         case 6: system("cls"); menu_for_manager(); system("cls"); return; break;
+        default: cout << "Неверно введён номер операции" << endl; system("pause"); system("cls");
         }
     }
 }
@@ -89,12 +102,13 @@ void menu_for_manager() {
 		switch (choice) {
         case 1:  WorkWithFlowers::addFlower(); system("pause"); system("cls"); break;
         case 2:  WorkWithFlowers::AllFlowers(WorkWithFlowers::Flowers); system("pause"); system("cls"); break;
-        case 3:  WorkWithFlowers::editFlower(); system("pause"); system("cls"); break;
+        case 3:  WorkWithFlowers::editFlower(); system("pause"); system("cls");   break;
         case 4:  WorkWithFlowers::deleteFlower(); system("pause"); system("cls"); break;
-        case 5:  WorkWithFlowers::sortFlower(WorkWithFlowers::Flowers); system("pause"); system("cls"); break;
+        case 5:  WorkWithFlowers::sortFlower(WorkWithFlowers::Flowers); break;
         case 6:  WorkWithFlowers::searchFlowers();  system("cls"); break;
         case 7:system("cls"); MenuForManagerForOrders(); system("cls"); break;
         case 8:system("cls"); workFithAuthentication::show_menu_for_registr(); return;  break;
+        default: cout << "Неверно введён номер операции" << endl; system("pause"); system("cls");
 		}
 	}
 }
@@ -128,7 +142,14 @@ void WorkWithFlowers::deleteFlower() {
     cout << "Введите номер цветка, который вы хотите удалить : ";
     int index;
     cin >> index;
-    index = check(1, Flowers.size(),index);
+    try  {
+        Flowers.at(index - 1);
+    } catch (out_of_range &e) {
+        cout << "Вы ввели неверный номер цветка" << endl;
+        cin.clear();
+        cin.ignore(256, '\n');
+        return;
+    }
     viewTop();
     WorkWithFlowers::viewOneFlower(index-1, Flowers);
     cout << "Вы точно хотите удалить данный цветок ? (1/0) : ";
@@ -149,7 +170,14 @@ void WorkWithFlowers::editFlower() {
     cout << "Введите номер цветка, который вы хотите отредактировать : " << endl;
     int number;
     cin >> number;
-    number = check(1, Flowers.size(), number);
+    try {
+        Flowers.at(number-1);
+    }
+    catch (out_of_range &e) {
+        cout << "Вы ввели неверный номер цветка" << endl;
+        cin.clear(); cin.ignore(256, '\n');
+        return;
+    }
     viewTop();
     WorkWithFlowers::viewOneFlower(number - 1,Flowers);
     cout << "Что хотите изменить в данном цветке ?" << endl;
@@ -166,22 +194,31 @@ void WorkWithFlowers::editFlower() {
     case 1:
         cout << "Введите новое название цветка : ";
         cin >> NewName;
-        cout << "Вы изменили имя цветка " << number << " с " << Flowers[number - 1].GetName() << " на " << NewName << endl;
-        Flowers[number - 1].setName(NewName);
+        if (NewName == Flowers[number - 1].GetName()) cout << "Вы ввели такое же название цветка" << endl;
+        else {
+            cout << "Вы изменили имя цветка " << number << " с " << Flowers[number - 1].GetName() << " на " << NewName << endl;
+            Flowers[number - 1].setName(NewName);
+        }
         break;
     case 2:
         cout << "Введите новое количество цветков : ";
         cin >> NewAmount;
         NewAmount = check(1, 10000, NewAmount);
-        cout << "Вы изменили количсевто  цветов " << number << " с " << Flowers[number - 1].GetAmount() << " на " << NewAmount << endl;
-        Flowers[number - 1].setAmount(NewAmount);
+        if (NewAmount == Flowers[number - 1].GetAmount()) cout << "Вы ввели такое же количество цветов" << endl;
+        else {
+            cout << "Вы изменили количсевто  цветов " << number << " с " << Flowers[number - 1].GetAmount() << " на " << NewAmount << endl;
+            Flowers[number - 1].setAmount(NewAmount);
+        }
         break;
     case 3:
         cout << "Введите новую цену цветка : ";
         cin >> NewCoast;
         NewCoast = check(1, 10000, NewCoast);
-        cout << "Вы изменили цену цветка " << number << " с " << Flowers[number - 1].GetCoast() << " на " << NewCoast << endl; \
-        Flowers[number - 1].setCoast(NewCoast);
+        if (NewCoast == Flowers[number - 1].GetCoast()) cout << "Вы ввели такую же цену" << endl;
+        else {
+            cout << "Вы изменили цену цветка " << number << " с " << Flowers[number - 1].GetCoast() << " на " << NewCoast << endl;
+            Flowers[number - 1].setCoast(NewCoast);
+        }
         break;
     case 4:return;
     }
@@ -227,13 +264,16 @@ void WorkWithFlowers::sortFlower(vector<Flower> &VectorFlowers) {
         sort(VectorFlowers.begin(), VectorFlowers.end(), CompareByCoast);
         cout << "Все цветы были отсортированы по цене" << endl;
         break;
-    case 4:return;
+    case 4: system("cls"); return;
     default:
         cout << "Вы неправильно ввели номер операции" << endl;
+        system("pause"); system("cls");
     }
     if (choice == 1 || choice == 2 || choice == 3) {
         AllFlowers(VectorFlowers);
+        system("pause"); system("cls");
     }
+   
 
 
 }
@@ -241,17 +281,26 @@ void WorkWithFlowers::sortFlower(vector<Flower> &VectorFlowers) {
 
 void WorkWithFlowers::searchFlowers()
 {
-    int choice=0;
-    while (choice != 4)
-    {
         cout << "По какому параметру вы хотите найти цветок ?" << endl;
         cout << "1. Название" << endl;
         cout << "2. Цена (Диапазон)" << endl;
         cout << "3. Количество нв складе (выводит цветы с количесвтом на складе больше чем введённое)" << endl;
         cout << "4. В Меню" << endl;
-
-        cin >> choice;
-        choice = check(1, 4, choice);
+        int choice;
+        try {
+            cin >> choice;
+            if (cin.fail()) {
+                cin.clear();
+                cin.ignore(256, '\n');
+                throw runtime_error("Неверный номер операции");
+            }
+        } 
+        catch (runtime_error& e) {
+            cout << e.what() << endl;
+            system("pause"); system("cls");
+            return;
+        }
+       
         bool result = false;
         int MinCoast, MaxCoast, amount;
         string Name;
@@ -319,10 +368,11 @@ void WorkWithFlowers::searchFlowers()
             }
             if (!result) cout << "Нет цветов с таким количеством на складе" << endl;
         }   break;
-        case 4: return;
+        case 4:system("cls"); return;
+        default: cout << "Вы ввели неверный номер операции" << endl;
         } 
+        system("pause"); system("cls");
     }
-}
 
 void WorkWithFlowers::AllFlowers(vector<Flower> VectorFlowers) {
     viewTop();
