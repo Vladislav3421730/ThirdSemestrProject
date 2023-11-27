@@ -11,10 +11,6 @@
 #define ENTER 13
 
 
-const string FILE_OF_ORDERS = "FileForOrders.dat";
-const string FILE_OF_FLOWERS_FOR_ORDERS = "FileForFlowersForOrder.dat";
-const string FILE_OF_FLOWERS = "FileForFlowers.dat";
-
 namespace WorkWithOrders {
 
 	vector<Order> Orders;
@@ -133,9 +129,12 @@ void MenuForUsers() {
 				{
 					d(x, y);
 					cout << "\n\n\n";
-					write_in_file(FILE_OF_ORDERS, WorkWithOrders::Orders);
-					write_in_file(FILE_OF_FLOWERS_FOR_ORDERS, WorkWithOrders::FlowersForOrders);
-					write_in_file(FILE_OF_FLOWERS, WorkWithFlowers::Flowers);
+					WriteInFile(FILE_OF_USERS, workFithAuthentication::users);
+					WriteInFile(FILE_OF_ADMIN, workFithAuthentication::admins);
+					WriteInFile(FILE_OF_FLOWERS, WorkWithFlowers::Flowers);
+					WriteInFile(FILE_OF_MANAGERS, workFithAuthentication::managers);
+					WriteInFile(FILE_OF_FLOWERS_FOR_ORDERS, WorkWithOrders::FlowersForOrders);
+					WriteInFile(FILE_OF_ORDERS, WorkWithOrders::Orders);
 					exit(0);
 					return;
 			
@@ -447,16 +446,22 @@ void WorkWithOrders::SearchOrders() {
 		int index;
 		cin >> index;
 		index = check_on_letters(index);
-		if (index <= 0 || index > Orders.size()) {
-			cout << "Вы неверно ввели номер заказа" << endl;
+		bool result=false;
+		for (int i = 0; i < Orders.size(); i++) {
+			if(Orders[i].getNumber()==index){
+				result = true;
+				index = i;
+			}
 		}
-		else {
-			shared_ptr<Order> OrderPtr = make_shared<Order>(Orders[index - 1]);
-			cout << "ЗАКАЗ № " << OrderPtr->getNumber() << endl;
-			viewTopForOrder();
-			viewOneOrderFlowers(index, OrderPtr);
-			ViewOneOrder(index, OrderPtr);
+		if (!result) {
+			cout << "Неправильно введён номер заказа" << endl;
+			break;
 		}
+		shared_ptr<Order> OrderPtr = make_shared<Order>(Orders[index]);
+		cout << "ЗАКАЗ № " << OrderPtr->getNumber() << endl;
+		viewTopForOrder();
+		viewOneOrderFlowers(index, OrderPtr);
+		ViewOneOrder(index, OrderPtr);
 		break;
 	}
 	case 3:

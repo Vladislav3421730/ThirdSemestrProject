@@ -19,7 +19,7 @@ namespace workFithAuthentication
 	shared_ptr<User> UserPtr;
 
 }
-extern void workFithAuthentication::show_menu_for_registr()
+void workFithAuthentication::show_menu_for_registr()
 {
 	int choice;
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
@@ -61,7 +61,6 @@ extern void workFithAuthentication::show_menu_for_registr()
 		}
 		else
 		{
-			cout << "Данные введены неверно" << endl;
 			system("pause");
 			system("cls");
 			show_menu_for_registr();
@@ -110,8 +109,10 @@ extern bool  workFithAuthentication::INPUT_FOR_USERS()
 	cout << "Пароль: ";
 	password = vvod(password);
 	password = encryptPassword(password);
+	bool result = false;
 	for (auto user : users) {
 		if (user.getPassword() == password && user.getLogin() == login) {
+			result = true;
 			if (user.getIsBan()) {
 				cout << "Вы были забанены" << endl;
 				return false;
@@ -123,6 +124,9 @@ extern bool  workFithAuthentication::INPUT_FOR_USERS()
 			UserPtr = make_shared<User>(user);
 			return true;
 		}
+	}
+	if (!result) {
+		cout << "Данные введены неверно" << endl;
 	}
 	return false;
 }

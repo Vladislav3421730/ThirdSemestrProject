@@ -7,8 +7,15 @@
 #include"passwords.h"
 using namespace std;
 
+const string FILE_OF_ADMIN = "FileForAdmins.dat";
+const string FILE_OF_USERS = "FileForUsers.dat";
+const string FILE_OF_FLOWERS = "FileForFlowers.dat";
+const string FILE_OF_MANAGERS = "FileForMenegers.dat";
+const string FILE_OF_FLOWERS_FOR_ORDERS = "FileForFlowersForOrder.dat";
+const string FILE_OF_ORDERS = "FileForOrders.dat";
+
 template<class T>
-extern  void write_in_file(const string filename, vector<T> vector) {
+extern  void WriteInFile(const string filename, vector<T> vector) {
 	ofstream file(filename, ios::binary);
 	if (!file) {
 		cout << "Ошибка открытия файла " << filename << endl;
@@ -21,7 +28,7 @@ extern  void write_in_file(const string filename, vector<T> vector) {
 }
 
 template<class T>
-extern void copy_from_file(const string filename, vector<T> &vector) {
+extern void CopyFromFile(const string filename, vector<T> &vector) {
 	ifstream file(filename, ios::binary);
 		if (!file) {
 			cout << "Ошибка открытия файла " << filename << endl;

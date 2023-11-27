@@ -382,7 +382,8 @@ void WorkWithFlowers::AllFlowers(vector<Flower> VectorFlowers) {
 
 }
 void WorkWithFlowers::viewOneFlower(int i, vector<Flower> VectorFlowers) {
-    cout << "|  " << setw(3) << i + 1 << "  |   " << setw(21) << VectorFlowers[i].GetName() << "  |         " << setw(5) << VectorFlowers[i].GetAmount() << "        |       "
-        << setw(5) << VectorFlowers[i].GetCoast() << "   |" << endl;
+    cout << "|  "<<left << setw(3) << i + 1 << "  |   " << setw(21) << VectorFlowers[i].GetName()
+    << "  |         "<<left << setw(5) << VectorFlowers[i].GetAmount() << "        |       "<<left<<
+    setw(5) << VectorFlowers[i].GetCoast() << "   |" << endl;
     cout << "|_______|__________________________|______________________|_______________|" << endl;
 }
