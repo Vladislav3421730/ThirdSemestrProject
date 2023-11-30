@@ -12,25 +12,6 @@
 
 using namespace std;
 
-class User;
-class Admin;
-class Manager;
-namespace workFithAuthentication
-{
-	extern vector<Admin> admins;
-	extern vector<User> users;
-	extern vector<Manager> managers;
-	extern shared_ptr<User> UserPtr;
-	extern void show_menu_for_registr();
-	extern bool INPUT_FOR_USERS();
-	extern bool INPUT_FOR_ADMIN();
-	extern bool INPUT_FOR_MANAGER();
-	extern void REGISTRATION();
-	extern void menu_for_work_with_users();
-}
-
-
-
 class CommonInterface {
 protected:
 	string password;
@@ -92,13 +73,13 @@ public:
 		return os;
 	}
 
-	void displayInformation() override {
-		cout << "Manager Information: Login = " << login << ", Password = " << password << endl;
-	}
-
 	friend istream& operator>>(istream& is, Manager& Manager) {
 		is >> Manager.login >> Manager.password;
 		return is;
+	}
+
+	void displayInformation() override {
+		cout << "Manager Information: Login = " << login << ", Password = " << password << endl;
 	}
 };
 
@@ -167,3 +148,17 @@ public:
 		return is;
 	}
 };
+
+namespace workFithAuthentication
+{
+	extern vector<Admin> admins;
+	extern vector<User> users;
+	extern vector<Manager> managers;
+	extern shared_ptr<User> UserPtr;
+	extern void show_menu_for_registr();
+	extern bool INPUT_FOR_USERS();
+	extern bool INPUT_FOR_ADMIN();
+	extern bool INPUT_FOR_MANAGER();
+	extern void REGISTRATION();
+	extern void menu_for_work_with_users();
+}

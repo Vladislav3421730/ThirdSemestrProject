@@ -19,7 +19,7 @@ namespace workFithAuthentication
 	shared_ptr<User> UserPtr;
 
 }
-void workFithAuthentication::show_menu_for_registr()
+ void workFithAuthentication::show_menu_for_registr()
 {
 	int choice;
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);

@@ -58,6 +58,7 @@ enum OrderStatus { Accepted, Processing, Packing, Delivered };
 class Order
 {
 private:
+	
 	int Number;
 	vector<shared_ptr<FlowerForOrder>> Flowers;
 	string UserLogin;
@@ -67,6 +68,7 @@ private:
 	int TotalSum;
 
 public:
+
 	Order() {}
 
 	void setNumber(int Number) {

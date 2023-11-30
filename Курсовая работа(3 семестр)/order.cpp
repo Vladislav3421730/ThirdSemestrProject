@@ -129,12 +129,12 @@ void MenuForUsers() {
 				{
 					d(x, y);
 					cout << "\n\n\n";
-					WriteInFile(FILE_OF_USERS, workFithAuthentication::users);
-					WriteInFile(FILE_OF_ADMIN, workFithAuthentication::admins);
-					WriteInFile(FILE_OF_FLOWERS, WorkWithFlowers::Flowers);
-					WriteInFile(FILE_OF_MANAGERS, workFithAuthentication::managers);
-					WriteInFile(FILE_OF_FLOWERS_FOR_ORDERS, WorkWithOrders::FlowersForOrders);
-					WriteInFile(FILE_OF_ORDERS, WorkWithOrders::Orders);
+					FileManager::WriteInFile(FILE_OF_USERS, workFithAuthentication::users);
+					FileManager::WriteInFile(FILE_OF_ADMIN, workFithAuthentication::admins);
+					FileManager::WriteInFile(FILE_OF_FLOWERS, WorkWithFlowers::Flowers);
+					FileManager::WriteInFile(FILE_OF_MANAGERS, workFithAuthentication::managers);
+					FileManager::WriteInFile(FILE_OF_FLOWERS_FOR_ORDERS, WorkWithOrders::FlowersForOrders);
+					FileManager::WriteInFile(FILE_OF_ORDERS, WorkWithOrders::Orders);
 					exit(0);
 					return;
 			

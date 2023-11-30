@@ -9,24 +9,24 @@ int main()
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 
-	CopyFromFile(FILE_OF_MANAGERS, workFithAuthentication::managers);
-	CopyFromFile(FILE_OF_ADMIN, workFithAuthentication::admins);
-	CopyFromFile(FILE_OF_USERS, workFithAuthentication::users);
-	CopyFromFile(FILE_OF_FLOWERS, WorkWithFlowers::Flowers);
-	CopyFromFile(FILE_OF_FLOWERS_FOR_ORDERS, WorkWithOrders::FlowersForOrders);
-	CopyFromFile(FILE_OF_ORDERS, WorkWithOrders::Orders);
+	FileManager::CopyFromFile(FILE_OF_MANAGERS, workFithAuthentication::managers);
+	FileManager::CopyFromFile(FILE_OF_ADMIN, workFithAuthentication::admins);
+	FileManager::CopyFromFile(FILE_OF_USERS, workFithAuthentication::users);
+	FileManager::CopyFromFile(FILE_OF_FLOWERS, WorkWithFlowers::Flowers);
+	FileManager::CopyFromFile(FILE_OF_FLOWERS_FOR_ORDERS, WorkWithOrders::FlowersForOrders);
+	FileManager::CopyFromFile(FILE_OF_ORDERS, WorkWithOrders::Orders);
 
 	
-	CopyFlowersToOrder(WorkWithOrders::FlowersForOrders, WorkWithOrders::Orders);
-	CopyOrdersToUser(WorkWithOrders::Orders, workFithAuthentication::users);
+	FileManager::CopyFlowersToOrder(WorkWithOrders::FlowersForOrders, WorkWithOrders::Orders);
+	FileManager::CopyOrdersToUser(WorkWithOrders::Orders, workFithAuthentication::users);
 
 	workFithAuthentication::show_menu_for_registr();
 
-	WriteInFile(FILE_OF_USERS, workFithAuthentication::users);
-	WriteInFile(FILE_OF_ADMIN, workFithAuthentication::admins);
-	WriteInFile(FILE_OF_FLOWERS, WorkWithFlowers::Flowers);
-	WriteInFile(FILE_OF_MANAGERS, workFithAuthentication::managers);
-	WriteInFile(FILE_OF_FLOWERS_FOR_ORDERS, WorkWithOrders::FlowersForOrders);
-	WriteInFile(FILE_OF_ORDERS, WorkWithOrders::Orders);
+	FileManager::WriteInFile(FILE_OF_USERS, workFithAuthentication::users);
+	FileManager::WriteInFile(FILE_OF_ADMIN, workFithAuthentication::admins);
+	FileManager::WriteInFile(FILE_OF_FLOWERS, WorkWithFlowers::Flowers);
+	FileManager::WriteInFile(FILE_OF_MANAGERS, workFithAuthentication::managers);
+	FileManager::WriteInFile(FILE_OF_FLOWERS_FOR_ORDERS, WorkWithOrders::FlowersForOrders);
+	FileManager::WriteInFile(FILE_OF_ORDERS, WorkWithOrders::Orders);
 	
 }

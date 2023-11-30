@@ -51,10 +51,9 @@ void MenuForManagerForOrders() {
         }
         no_color
         switch (choice) {
-        case 1: {
+        case 1:
             WorkWithOrders::AllOrders(WorkWithOrders::AllOrdersInVector());
-            system("pause"); system("cls");
-        }break;
+            system("pause"); system("cls");break;
         case 2: WorkWithOrders::SortOrders(); break;
         case 3: WorkWithOrders::EditOrders(); system("pause"); system("cls"); break;
         case 4: WorkWithOrders::DeleteOrders(); system("pause"); system("cls"); break;
@@ -366,7 +365,7 @@ void WorkWithFlowers::searchFlowers()
                     viewOneFlower(i,Flowers);
                 }
             }
-            if (!result) cout << "Нет цветов с таким количеством на складе" << endl;
+            if (!result3) cout << "Нет цветов с таким количеством на складе" << endl;
         }   break;
         case 4:system("cls"); return;
         default: cout << "Вы ввели неверный номер операции" << endl;
@@ -382,8 +381,8 @@ void WorkWithFlowers::AllFlowers(vector<Flower> VectorFlowers) {
 
 }
 void WorkWithFlowers::viewOneFlower(int i, vector<Flower> VectorFlowers) {
-    cout << "|  "<<left << setw(3) << i + 1 << "  |   " << setw(21) << VectorFlowers[i].GetName()
-    << "  |         "<<left << setw(5) << VectorFlowers[i].GetAmount() << "        |       "<<left<<
+    cout << "|  "<< setw(3) << i + 1 << "  |   " << setw(21) << VectorFlowers[i].GetName()
+    << "  |         " << setw(5) << VectorFlowers[i].GetAmount() << "        |       "<<
     setw(5) << VectorFlowers[i].GetCoast() << "   |" << endl;
     cout << "|_______|__________________________|______________________|_______________|" << endl;
 }
